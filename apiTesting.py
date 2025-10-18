@@ -31,7 +31,6 @@ def getInfo():
     product_info["Name"] = driver.title
     soup = BeautifulSoup(html, 'html.parser')
     product_info["Comment"] = soup.find_all(class_="fdbk-container__details__comment") # problem here: it pulls comments for the seller too
-    product_info["Image"] = soup.find()
     # product_info[""]
 
     print(product_info)
