@@ -1,0 +1,14 @@
+{
+    "productName": "tissues",
+    "productPicture": "image address",
+    "productPrice": 19.50,
+    "scamAdviserScore" : 100,
+    "rateBudData" : {"score": 100, "authenticity": 87},
+    "ebayScraperAnalysis": {"score": 100, "authenticity": 87}
+
+}
+
+
+{
+    "url": "amazon.com"
+}
