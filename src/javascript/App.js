@@ -3,16 +3,20 @@ import prince from '../assets/prince.png'
 import '../css/App.css';
 import { MyTextbox } from './MyTextbox';
 import { ResultsPage } from './resultsPage';
-
+import React, { useState } from "react";
 
 function App() {
   
-  var contentFlag = false
-  let json = require('./test.json');
+
+  const [contentFlag, setInputValue] = useState(true);
   
+    const handleInputChange = (event) => {
+      setInputValue(!contentFlag)
+    }
+  
+  let json = require('./test.json');
 
-
-
+  
   return (
     
     
@@ -38,15 +42,18 @@ function App() {
           <>
 
           {ResultsPage(json)}
+          
 
           
           
           </>
 
+
           
           
           
           }
+          <input type='button' onClick={function() {handleInputChange()}}></input>
      
 
       </header>

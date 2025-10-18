@@ -1,4 +1,24 @@
+
+
+import prince from '../assets/prince.png'
+import princeGood from '../assets/prince_good.png'
+import princeBad from '../assets/prince_bad.png'
+import princeMiddle from '../assets/prince_middle.png'
+
 export function ResultsPage(json) {
+
+
+    function pickPrince(number) {
+        if(number >= 75)
+            return princeGood;
+        else if(number >= 50)
+            return princeMiddle;
+        else return princeBad;
+    }
+
+
+
+
   return <div className='PanelList'>
 
     <h2> Heres what we found out.</h2>
@@ -24,7 +44,7 @@ export function ResultsPage(json) {
     <div className='Panel'>
 
 
-      <img className="panelImg" src={json.productPicture}></img>
+      <img className="panelImg" src={pickPrince(json.rateBudData.score)}></img>
       <h2>
         RateBud
       </h2>
