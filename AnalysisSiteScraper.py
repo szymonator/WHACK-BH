@@ -114,6 +114,16 @@ try:
     reviewTrustScore = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[1]/div[2]/div/div/div[1]/div[2]/div[2]/span[1]").text
     print(reviewTrustScore)
 
+    authenticityRateBud = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div[2]/div[2]/div/div/div[1]/div[2]/div[1]").text
+    print(authenticityRateBud)
+
+    recommendationRateBud = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div[3]/div[1]/p").text
+    print(recommendationRateBud)
+
+    reviewsAnalysed = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div[3]/div[3]/p").text
+    print(reviewsAnalysed)
+
+
 except Exception as e:
     print(f"\n--- RATEBUD SCRIPT FAILED ---")
     print(f"Error: {e}")
