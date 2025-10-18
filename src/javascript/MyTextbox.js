@@ -10,11 +10,19 @@ export function MyTextbox() {
   }
 
 
-
-
   function handleClick() {
     if (validURL(inputValue)) {
       console.log("hell yea");
+
+      sendRequest(inputValue).then( function(json) {
+
+
+
+      },
+      function(error) {
+
+      }
+    );
     }
 
     else {
@@ -49,8 +57,8 @@ export function MyTextbox() {
 
   }
 
-
-  async function sendRequest(link) {
+// sends post request to specific url and recieves json file in return
+  async function sendRequest(link ) {
     const url = ""
     try {
       const response = await fetch(url, {
@@ -65,7 +73,7 @@ export function MyTextbox() {
       return await response.json()
 
     }
-    
+
     catch (error) {
       console.error(error.message)
     }
