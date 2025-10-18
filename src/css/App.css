@@ -11,8 +11,9 @@
   border-radius: 30px;
   flex-direction: row;
   justify-content: center;
-  width: 90%;
-  height: 30%;
+  min-width: 400px;
+  width: 60%;
+  height: 20%;
   padding: 10px;
 
   background-color: aliceblue;
@@ -21,15 +22,37 @@
 }
 
 
-.submitButton{
+.textbox{
+  align-items: center;
+  justify-content: center;
+  height:30%;
+  width:50%;
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  gap: 20px;
   
+}
+
+.submitButton{
+  width: 100px;
+  height: 35px;
+  border-radius: 10px;
+
+}
+
+.text{
+  width:300px;
+  height:40px;
+border-radius: 20px;
 }
 
 
 
 
-
 .PanelList{
+
+  align-items: center;
   overflow: hidden;
   width: 90%;
   height: 50%;

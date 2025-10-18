@@ -16,6 +16,23 @@ export function ResultsPage(json) {
         else return princeBad;
     }
 
+    // creates a rating box. needs title, score and a list of data to display
+    function RatingBox(name,score, infoList) {
+    return <div className='Panel'>
+
+
+        <img className="panelImg" src={pickPrince(score)}></img>
+        <h2>
+            {name}
+        </h2>
+        
+        <p>
+            {infoList.map((dataString => <p> {dataString} <br></br></p>)  )}
+        </p>
+
+    </div>;
+}
+
 
 
 
@@ -41,19 +58,10 @@ export function ResultsPage(json) {
     </div>
 
 
-    <div className='Panel'>
-
-
-      <img className="panelImg" src={pickPrince(json.rateBudData.score)}></img>
-      <h2>
-        RateBud
-      </h2>
-      <p>
-        Score: {json.rateBudData.score} <br></br>
-        Authenicity: {json.rateBudData.authenticity}
-      </p>
-
-    </div>
+    {RatingBox("Ratebud",json.rateBudData.score, [`Score: ${json.rateBudData.score}`,`Authenticity: ${json.rateBudData.authenticity}`])}
 
   </div>;
+  
 }
+
+
