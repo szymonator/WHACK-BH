@@ -1,0 +1,60 @@
+# imports
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+analyzer = SentimentIntensityAnalyzer()
+
+def getInfo():
+    driver = webdriver.Chrome()
+    driver.get("https://www.ebay.co.uk/itm/146870704806?_skw=cups+and+mugs&itmmeta=01K7VV4KM2C7H3QE649MWA28J9&hash=item22322d1aa6:g:Y0wAAeSwwfdo361J&itmprp=enc%3AAQAKAAAA0NHOg0D50eDiCdi%2FfP0r02ttbuuZoIVydl20m9w6AMUa5dQzJZZxkcjxVDalk7p%2FXl0NceH7VEocqOagEYJBMCqRniv%2Bbs%2BiN5vXy1R8hKPfDD8t9qlJn2KFT%2FzloHyDOTha%2B0vcxAdtv%2B9iB8sKfYi5dzh5efuJuXUMKgcAvqW5EA1KvYinGI%2FPguu4suWcEnOmVYy8ltRbFFSgfdydXoLu9V2HbbhSnW1oSTERCG1ASWw7QvfcHCnFnz1W%2FQ1UjAm%2B5Svcsxa8x2GhhjotNEI%3D%7Ctkp%3ABk9SR5a6kvu-Zg")
+    try:
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "fdbk-container__details__comment"))
+        )
+    except:
+        print("Comments not found.")
+        driver.quit()
+        return
+    
+    html = driver.page_source
+
+
+    # we need: item url, item name, item price, customer reviews
+    # after that, try to get the seller reviews gone, just the reviews for the product itself
+    product_info = {}
+    product_info["Name"] = driver.title
+    soup = BeautifulSoup(html, 'html.parser')
+    product_info["Comment"] = soup.find_all(class_="fdbk-container__details__comment") # problem here: it pulls comments for the seller too
+    # product_info[""]
+
+    print(product_info)
+    count = 0
+    scoretotal = 0
+    for comment in product_info["Comment"]:
+        count += 1
+        comment1 = comment.get_text()
+        scoretotal += analyzer.polarity_scores(comment1)['compound']
+        print(analyzer.polarity_scores(comment1))
+    compoundaverage = scoretotal/count
+    print("The average compound score is: " + str(compoundaverage))
+
+    if compoundaverage > 0.2:
+        print("Overall, the users have POSITIVE feedback about this product")
+    elif compoundaverage < -0.2:
+        print("Overall, the users have NEGATIVE feedack about this product")
+    else:
+        print("Overall, the users have NEUTRAL feedback about this product")
+
+    # title = driver.title
+    # print("Title: " + title)
+
+    # comments = driver.find_element(By.CLASS_NAME, "fdbk-container__details__comment")
+    # print("Comments: " + comments.get_attribute("value"))
+
+
+    driver.quit()
+getInfo()
