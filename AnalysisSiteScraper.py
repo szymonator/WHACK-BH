@@ -24,17 +24,19 @@ time.sleep(0.5)
 
 enterURL = driver.find_element(By.XPATH, "/html/body/div[1]/div[3]/div[3]/div[1]/div[2]/div[1]/form/button")
 enterURL.click()
-time.sleep(0.5)
 
 try:
     antiBot = driver.find_element(By.XPATH, "/html/body/div[1]/section[1]/div/div/div/div/div/div/div[2]/form/button")
     antiBot.click()
-    time.sleep(3.5)
 except:
     pass
 
+time.sleep(3.5)
 scamAdviserScore = driver.find_element(By.XPATH, "/html/body/div[1]/section[1]/div/div[5]/div/div[1]/div/div/div/div/div/div[1]/div[2]/span").text
 print(scamAdviserScore) # This is a score from 0-100
 
 # ratebud.ai - only for amazon
 driver.get('https://ratebud.ai')
+inputBox = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div/div[2]/div/form/div/input")
+inputBox.send_keys(Keys.CLEAR, URL)
+time.sleep(0.5)
