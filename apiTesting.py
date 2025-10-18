@@ -1,11 +1,24 @@
+# imports: selenium, beautifulsoup (web scraping), vadersentiment(tone detection) and transformers(ai detection)
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from transformers import pipeline, AutoModel
+import os
+from dotenv import load_dotenv
+# import accesstoken from .env
 
+load_dotenv()
+
+# making a token to connect Hugging Face Transformers
 analyzer = SentimentIntensityAnalyzer()
+extraction = os.getenv("ACCESS_KEY")
+detector = pipeline("text-classification", model="roberta-base-openai-detector", token=extraction)
+# token=extraction
+# model = AutoModel.from_pretrained("roberta-base-openai-detection", token=extraction)
+
 
 def getInfo():
     driver = webdriver.Chrome()
@@ -27,11 +40,13 @@ def getInfo():
 
     # we need: item url, item name, item price, customer reviews
     # after that, try to get the seller reviews gone, just the reviews for the product itself
+    # transformers AI detector
     product_info = {}
-    product_info["Name"] = driver.title
     soup = BeautifulSoup(html, 'html.parser')
+    product_info["Name"] = driver.title
+    product_info["Price"] = soup.find(class_="x-price-primary").get_text()
+    product_info["Price"] = product_info["Price"].split(" ")[0]
     product_info["Comment"] = soup.find_all(class_="fdbk-container__details__comment") # problem here: it pulls comments for the seller too
-    product_info["Image"] = soup.find()
     # product_info[""]
 
     print(product_info)
@@ -40,6 +55,7 @@ def getInfo():
     for comment in product_info["Comment"]:
         count += 1
         comment1 = comment.get_text()
+        print(detector(comment1))
         scoretotal += analyzer.polarity_scores(comment1)['compound']
         print(analyzer.polarity_scores(comment1))
     compoundaverage = scoretotal/count
@@ -51,13 +67,6 @@ def getInfo():
         print("Overall, the users have NEGATIVE feedack about this product")
     else:
         print("Overall, the users have NEUTRAL feedback about this product")
-
-    # title = driver.title
-    # print("Title: " + title)
-
-    # comments = driver.find_element(By.CLASS_NAME, "fdbk-container__details__comment")
-    # print("Comments: " + comments.get_attribute("value"))
-
 
     driver.quit()
 getInfo()
