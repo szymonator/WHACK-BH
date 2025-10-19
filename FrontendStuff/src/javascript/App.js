@@ -3,23 +3,16 @@ import '../css/App.css';
 import { ResultsPage } from './resultsPage';
 import { useState } from "react";
 import { requestAnalysis } from '../ApiCalls';
-import { SpinnerButton } from './components/Spinner';
+import { Spinner } from '../../src/components/Spinner.jsx'
+
 
 export default function App() {
 
-  // State for the text in the input box
-  const [inputValue, setInputValue] = useState('');
-
-  // State to hold the JSON data from the API.
-  // This is the key fix. It starts as null.
-  const [analysisData, setAnalysisData] = useState(null);
-
-  // State to control which view is showing (input vs. results)
-  const [isInputView, setInputView] = useState(true);
-
-  // State for any error messages
-  const [errorMessage, setErrorMessage] = useState('');
-
+  const [ inputValue, setInputValue ] = useState('');
+  const [ analysisData, setAnalysisData ] = useState(null);
+  const [ isInputView, setInputView ] = useState(true);
+  const [ errorMessage, setErrorMessage ] = useState('');
+  const [ isntLoading, setIsntLoading ] = useState(true)
 
 
   const handleInputChange = (event) => {
@@ -29,12 +22,11 @@ export default function App() {
   // The main function that runs when the "Submit" button is clicked
   const handleClick = () => {
     setErrorMessage(''); // Clear previous errors
+    setIsntLoading(false)
 
-    if (validURL(inputValue)) {
       // Show some kind of loading state here if you want
 
       console.log("Requesting analysis for:", inputValue);
-
       requestAnalysis(inputValue).then(
         (returnedJson) => {
           // 1. We get the JSON back from the API call.
@@ -52,12 +44,6 @@ export default function App() {
         console.error("API call failed:", error);
         setErrorMessage("Something went wrong on the server, please try again.");
       });
-
-    } else {
-      // Handle client-side validation failure
-      setErrorMessage("Invalid URL. Please use a valid link from Amazon or eBay.");
-      console.log("Invalid URL provided.");
-    }
   };
 
   // Function to go back to the input screen from the results page
@@ -65,21 +51,9 @@ export default function App() {
       setInputView(true);
       setInputValue(''); // Clear the input box
       setAnalysisData(null);
+      setIsntLoading(true);
   };
 
-
-  // --- URL VALIDATION ---
-  
-  const VALIDHOSTS = ["www.amazon.co.uk", "www.amazon.com", "www.ebay.co.uk", "www.ebay.com"];
-  
-  function validURL(userURL) {
-    try {
-      const url = new URL(userURL);
-      return VALIDHOSTS.includes(url.host);
-    } catch {
-      return false;
-    }
-  }
 
   // --- COMPONENT RENDER ---
   return (
@@ -100,9 +74,9 @@ export default function App() {
                 onChange={handleInputChange}
                 placeholder="Paste product URL here (e.g., from Amazon, eBay)"
               />
-              { isntLoading ? (<button onClick={handleClick}>Submit</button>) :
-              (<SpinnerButton/>)
-}
+              { isntLoading ? (<button className="submitButton" onClick={handleClick}>Submit</button>) : (<Spinner className="mr-2"/>) }
+
+
             </div>
             {/* Show error message if it exists */}
             {errorMessage && <p className="error-message">{errorMessage}</p>}
