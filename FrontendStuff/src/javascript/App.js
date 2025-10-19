@@ -3,6 +3,7 @@ import '../css/App.css';
 import { ResultsPage } from './resultsPage';
 import { useState } from "react";
 import { requestAnalysis } from '../ApiCalls';
+import { Spinner } from '../../src/components/Spinner.jsx'
 
 
 export default function App() {
@@ -21,11 +22,11 @@ export default function App() {
   // The main function that runs when the "Submit" button is clicked
   const handleClick = () => {
     setErrorMessage(''); // Clear previous errors
+    setIsntLoading(false)
 
       // Show some kind of loading state here if you want
 
       console.log("Requesting analysis for:", inputValue);
-
       requestAnalysis(inputValue).then(
         (returnedJson) => {
           // 1. We get the JSON back from the API call.
@@ -50,6 +51,7 @@ export default function App() {
       setInputView(true);
       setInputValue(''); // Clear the input box
       setAnalysisData(null);
+      setIsntLoading(true);
   };
 
 
@@ -72,7 +74,7 @@ export default function App() {
                 onChange={handleInputChange}
                 placeholder="Paste product URL here (e.g., from Amazon, eBay)"
               />
-              <button onClick={handleClick}>Submit</button>)
+              { isntLoading ? (<button className="submitButton" onClick={handleClick}>Submit</button>) : (<Spinner className="mr-2"/>) }
 
 
             </div>

@@ -1,7 +1,3 @@
-import prince from '../assets/prince.png'
-import princeGood from '../assets/prince_good.png'
-import princeBad from '../assets/prince_bad.png'
-import princeMiddle from '../assets/prince_middle.png'
 
 // Reusable component for displaying analysis panels.
 function RatingBox({ name, infoList }) {
@@ -74,7 +70,7 @@ export function ResultsPage(json) {
   // Case 3: The response is for a random (non-Amazon/eBay) URL
   else if (json.type === 'random') {
     const scamAdviserData = [
-        `Trust Score: ${json.scamAdviserScore || 'N/A'}`
+        `Trust Score: ${json.scamAdviserScore || 'N/A'}/100`
     ];
     
     return (

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .App {
   text-align: center;
 }
@@ -31,7 +35,7 @@
   padding: 20px;
   flex-direction: column;
   gap: 20px;
-  
+  color: #282c34;
 }
 
 .submitButton{
@@ -75,7 +79,9 @@ border-radius: 20px;
   
 }
 
-
+.submitButton{
+  color: white;
+}
 
 @keyframes fadeIn {
   from {
@@ -90,18 +96,6 @@ border-radius: 20px;
 
 .PanelList:first-child{
   animation-delay: 2000000ms;
-}
-
-
-
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 2s linear;
-  }
-  .Panel{
-    animation: fadeIn 1000ms 0ms forwards;
-  }
 }
 
 .App-header {
