@@ -3,9 +3,9 @@ import '../css/App.css';
 import { ResultsPage } from './resultsPage';
 import { useState } from "react";
 import { requestAnalysis } from '../ApiCalls';
+import { SpinnerButton } from './components/Spinner';
 
 export default function App() {
-  // --- STATE HOOKS ---
 
   // State for the text in the input box
   const [inputValue, setInputValue] = useState('');
@@ -21,7 +21,6 @@ export default function App() {
   const [errorMessage, setErrorMessage] = useState('');
 
 
-  // --- EVENT HANDLERS ---
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -33,11 +32,11 @@ export default function App() {
 
     if (validURL(inputValue)) {
       // Show some kind of loading state here if you want
+
       console.log("Requesting analysis for:", inputValue);
 
       requestAnalysis(inputValue).then(
         (returnedJson) => {
-          // --- THIS IS THE FIX ---
           // 1. We get the JSON back from the API call.
           console.log("API returned successfully:", returnedJson);
           
@@ -87,14 +86,13 @@ export default function App() {
     <div className="App">
       <header className="App-header">
         <h1>
-          Prince the cat's Review Checker
+          Website Review Checker
         </h1>
         <img src={prince} className="App-logo" alt="logo" />
 
         {isInputView ? (
-          // --- INPUT VIEW ---
           <>
-            <p>Insert a link (meow)</p>
+            <p>Insert a link: </p>
             <div className="textbox">
               <input
                 type="text"
@@ -102,13 +100,14 @@ export default function App() {
                 onChange={handleInputChange}
                 placeholder="Paste product URL here (e.g., from Amazon, eBay)"
               />
-              <button onClick={handleClick}>Submit</button>
+              { isntLoading ? (<button onClick={handleClick}>Submit</button>) :
+              (<SpinnerButton/>)
+}
             </div>
             {/* Show error message if it exists */}
             {errorMessage && <p className="error-message">{errorMessage}</p>}
           </>
         ) : (
-          // --- RESULTS VIEW ---
           <>
             {/* We check if analysisData is not null before trying to render the results.
               This prevents errors if the API call is still in progress.
