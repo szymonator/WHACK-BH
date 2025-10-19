@@ -7,9 +7,100 @@
   pointer-events: none;
 }
 
+.Panel{
+  border-radius: 30px;
+  flex-direction: row;
+  justify-content: center;
+  min-width: 400px;
+  width: 60%;
+  height: 20%;
+  padding: 10px;
+
+  background-color: aliceblue;
+  color: black;
+  
+}
+
+
+.textbox{
+  align-items: center;
+  justify-content: center;
+  height:30%;
+  width:50%;
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  gap: 20px;
+  
+}
+
+.submitButton{
+  width: 100px;
+  height: 35px;
+  border-radius: 10px;
+
+}
+
+.text{
+  width:300px;
+  height:40px;
+border-radius: 20px;
+}
+
+
+
+
+.PanelList{
+
+  align-items: center;
+  overflow: hidden;
+  width: 90%;
+  height: 50%;
+  padding: 20px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  gap: 10px;
+  
+}
+
+
+.panelImg{
+  float: left;
+  width: 30%;
+  margin: 10px;
+  padding: 30px;
+  border-radius: 60px;
+  
+}
+
+
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.PanelList:first-child{
+  animation-delay: 2000000ms;
+}
+
+
+
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+    animation: App-logo-spin infinite 2s linear;
+  }
+  .Panel{
+    animation: fadeIn 1000ms 0ms forwards;
   }
 }
 
@@ -33,6 +124,7 @@
     transform: rotate(0deg);
   }
   to {
-    transform: rotate(10000deg);
+    transform: rotate(360deg);
   }
 }
+

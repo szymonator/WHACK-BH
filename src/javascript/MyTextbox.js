@@ -1,32 +1,9 @@
 
+
+
+
 import React, { useState } from "react";
-export function MyTextbox() {
-
-  // state for textbox
-  const [inputValue, setInputValue] = useState('');
-
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value)
-  }
-
-
-
-
-  function handleClick() {
-    if (validURL(inputValue)) {
-      console.log("hell yea");
-    }
-
-    else {
-      console.log(":(")
-    }
-
-
-
-
-    console.log("presto vro");
-  }
-
+export function MyTextbox({inputValue,handleInputChange,errorMessage,handleClick}) {
   const VALIDHOSTS = ["amazon.co.uk", "amazon.com"];
   // returns whether the given input is a valid url
   function validURL(userURL) {
@@ -54,27 +31,20 @@ export function MyTextbox() {
         body: link
       })
 
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`)
-      }
 
-      return await response.json()
 
-    }
-    
-    catch (error) {
-      console.error(error.message)
-    }
 
-  }
 
 
   return (
 
     <div className="textbox">
-      <input type="text" value={inputValue} onChange={handleInputChange}>
+      
+      <input className="text"type="text" value={inputValue} onChange={handleInputChange}>
       </input>
-      <input type='button' onClick={handleClick}></input>
+      <input name="submit"className="submitButton"type='button' onClick={handleClick}></input>
+      
+      <p>{errorMessage}</p>
     </div>
   );
 }
