@@ -2,7 +2,7 @@ import prince from '../assets/prince.png'
 import '../css/App.css';
 import { ResultsPage } from './resultsPage';
 import { useState } from "react";
-import { sendRequest } from '../ApiCalls';
+import { requestAnalysis} from '../ApiCalls';
 
 export default function App() {
 
@@ -36,11 +36,11 @@ export default function App() {
     if (validURL(inputValue)) {
 
       // depending on whether request returns:
-      sendRequest(inputValue).then(
+      requestAnalysis(inputValue).then(
 
         //return obtained json
         function (json) {
-        console.log(":)")
+        console.log(json)
         return json
       },
       // spit out erro
