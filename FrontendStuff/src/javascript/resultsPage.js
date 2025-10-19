@@ -1,7 +1,6 @@
 import prince from '../assets/prince.png';
 
-// --- Reusable Component 1: Product Info ---
-// Displays the product's image, name, and price. Safely handles missing data.
+
 function ProductInfoPanel({ name, picture, price }) {
   return (
     <div className='Panel'>
@@ -18,8 +17,7 @@ function ProductInfoPanel({ name, picture, price }) {
   );
 }
 
-// --- Reusable Component 2: Analysis Results ---
-// Displays a list of analysis points. It will not crash.
+
 function RatingBox({ name, infoList }) {
   if (!infoList || !Array.isArray(infoList)) {
     return null; 
@@ -36,14 +34,10 @@ function RatingBox({ name, infoList }) {
   );
 }
 
-// --- The Main Results Page Component ---
-// This now handles all 3 data types from your backend.
 export function ResultsPage(json) {
 
-  // We use optional chaining (?.) everywhere to prevent crashes.
-  // If `json` is null or a property is missing, it will show 'N/A' instead of breaking.
 
-  // Case 1: The response is from an eBay URL
+  // The response is from an eBay URL
   if (json?.type === 'ebay') {
     const ebayScraperData = [
       `Overall Review Sentiment: ${json.ebayScraperAnalysis?.commentResult || 'N/A'}`,
@@ -63,7 +57,7 @@ export function ResultsPage(json) {
     );
   }
 
-  // Case 2: The response is from an Amazon URL
+  // The response is from an Amazon URL
   else if (json?.type === 'amazon') {
     const rateBudData = [
         `Score: ${json.rateBudData?.score || 'N/A'}`,
@@ -85,7 +79,7 @@ export function ResultsPage(json) {
     );
   }
 
-  // Case 3: The response is for a random (non-Amazon/eBay) URL
+  // The response is for a random URL
   else if (json?.type === 'random') {
     const scamAdviserData = [
         `Trust Score: ${json.scamAdviserScore || 'N/A'}`
@@ -99,7 +93,7 @@ export function ResultsPage(json) {
     );
   }
 
-  // Fallback Case: If the type is unknown or the data is malformed
+  // Fallback Case
   else {
     return (
         <div className='PanelList'>

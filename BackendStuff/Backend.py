@@ -32,6 +32,5 @@ def analysis():
                         "scamAdviserScore" : scamAdviserScoreVal})
     
 
-# main driver function
 if __name__ == '__main__':
     app.run()
