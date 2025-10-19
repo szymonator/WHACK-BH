@@ -56,17 +56,20 @@ def getInfo(ProductURL):
 
     count = 0
     scoretotal = 0
+    totalcount = 0
     for comment in product_info["Comment"]:
         commenttext = comment.get_text()
-        detectorstats = detector(commenttext)       
+        detectorstats = detector(commenttext)      
+        totalcount += 1 
         if detectorstats[0]['label'] == 'Real':
-            count += 1  
+            count += 1
             scoretotal += analyzer.polarity_scores(commenttext)['compound']
         # print(detector(commenttext))
         # count += 1
         
         # print(analyzer.polarity_scores(commenttext))
     compoundaverage = scoretotal/count
+    authenticity = str(round(count/totalcount*100))+"%"
     print("The average compound score is: " + str(compoundaverage))
 
     feedback = ""
@@ -82,4 +85,4 @@ def getInfo(ProductURL):
 
     driver.quit()
 
-    return product_info, feedback
+    return product_info, authenticity, feedback
