@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from apiTesting import getInfo
+from AnalysisSiteScraper import scamAdviserScraper, rateBudScraper
 app = Flask(__name__)
 
 CORS(app, supports_credentials=True, origins=['http://localhost:3000'], expose_headers=["Content-Type"])
@@ -9,15 +10,28 @@ CORS(app, supports_credentials=True, origins=['http://localhost:3000'], expose_h
 def analysis():
     url = request.get_json()["URL"]
     print(url)
-    product_info, authenticity, feedback = getInfo(url)
-    return jsonify({ 
-    "productName": product_info["Name"],
-    "productPicture": product_info["ImageAddress"],
-    "productPrice": product_info["Price"],
-    # "scamAdviserScore" : 100,
-    # "rateBudData" : {"score": 100, "authenticity": 87},
+    if "https://www.amazon.com" in url or "https://www.amazon.co.uk" in url:
+        rateBudScore, rateBudAuth, recommendationRateBud, numOfReviews, productName, productPrice, imageAddress = rateBudScraper(url)
+        return jsonify({"type": "amazon",
+                        "productName": productName,
+                        "productPicture": imageAddress,
+                        "productPrice": productPrice,
+                        "rateBudData" : {"score": rateBudScore, "authenticity": rateBudAuth, "recommended?": recommendationRateBud, "numOfReviews": numOfReviews}})
+    
+    elif "https://www.ebay.com" in url or "https://www.ebay.co.uk" in url:
+        product_info, authenticity, feedback = getInfo(url)
+        return jsonify({ "type": "ebay",
+                        "productName": product_info["Name"],
+                        "productPicture": product_info["ImageAddress"],
+                        "productPrice": product_info["Price"],
+                        "ebayScraperAnalysis": {"commentResult": feedback, "authenticity": authenticity}
+                        })
+    else:
+        scamAdviserScoreVal = scamAdviserScraper(url)
+        return jsonify({"type":"random",
+                        "scamAdviserScore" : scamAdviserScoreVal})
+    
 
-    "ebayScraperAnalysis": {"commentResult": feedback, "authenticity": authenticity}, })
 # main driver function
 if __name__ == '__main__':
     app.run()
