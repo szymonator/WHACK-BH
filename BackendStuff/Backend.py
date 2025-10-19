@@ -14,6 +14,7 @@ def analysis():
     "productName": product_info["Name"],
     "productPicture": product_info["ImageAddress"],
     "productPrice": product_info["Price"],
+    "commentResult": feedback,
     # "scamAdviserScore" : 100,
     # "rateBudData" : {"score": 100, "authenticity": 87},
     # "ebayScraperAnalysis": {"score": 100, "authenticity": 87}, 
