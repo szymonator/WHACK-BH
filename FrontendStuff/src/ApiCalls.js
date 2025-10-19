@@ -1,12 +1,12 @@
 export {
-    sendRequest
+    requestAnalysis
 }
 
 const domain = 'http://127.0.0.1:5000/';
 
-async function sendRequest(link) {
+async function requestAnalysis(link) {
 try {
-    const response = await fetch(domain + "request", {
+    const response = await fetch(domain + "analysis", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ URL: link }),
@@ -17,7 +17,7 @@ try {
     throw new Error(`Response status: ${response.status}`)
     }
 
-    return await response
+    return await response.json()
 
 }
 

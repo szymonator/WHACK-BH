@@ -5,8 +5,8 @@ app = Flask(__name__)
 
 CORS(app, supports_credentials=True, origins=['http://localhost:3000'], expose_headers=["Content-Type"])
 
-@app.route('/request', methods=["POST"])
-def request():
+@app.route('/analysis', methods=["POST"])
+def analysis():
     url = request.get_json()
     product_info, feedback = getInfo(url)
     return jsonify({ 
