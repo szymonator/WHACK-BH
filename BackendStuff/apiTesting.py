@@ -5,16 +5,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from transformers import pipeline, AutoModel
-import os
-from dotenv import load_dotenv
-
-
-load_dotenv()
 
 # making a token to connect Hugging Face Transformers
 analyzer = SentimentIntensityAnalyzer()
-extraction = os.getenv("ACCESS_KEY")
-detector = pipeline("text-classification", model="roberta-base-openai-detector", token=extraction)
+detector = pipeline("text-classification", model="roberta-base-openai-detector")
 
 
 def getInfo(ProductURL):
