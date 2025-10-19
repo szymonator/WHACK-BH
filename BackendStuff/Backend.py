@@ -17,7 +17,11 @@ def analysis():
     # "scamAdviserScore" : 100,
     # "rateBudData" : {"score": 100, "authenticity": 87},
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "ebayScraperAnalysis": {"commentResult": feedback, "authenticity": authenticity}, 
+=======
+    "ebayScraperAnalysis": {"score": 100, "authenticity": 87}, 
+>>>>>>> Stashed changes
 =======
     "ebayScraperAnalysis": {"score": 100, "authenticity": 87}, 
 >>>>>>> Stashed changes
