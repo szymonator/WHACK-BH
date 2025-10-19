@@ -3,14 +3,11 @@ import princeGood from '../assets/prince_good.png'
 import princeBad from '../assets/prince_bad.png'
 import princeMiddle from '../assets/prince_middle.png'
 
-// A React component to display a single rating panel.
-// It takes 'props' as an argument, which is an object containing 'name' and 'infoList'.
+// Reusable component for displaying analysis panels.
 function RatingBox({ name, infoList }) {
-  // We add a check here to be 100% crash-proof.
-  if (!infoList) {
-    return null; // Don't render anything if the data isn't there
+  if (!infoList || !Array.isArray(infoList)) {
+    return null; 
   }
-
   return (
     <div className='Panel'>
         <h2>{name}</h2>
@@ -23,40 +20,78 @@ function RatingBox({ name, infoList }) {
   );
 }
 
-// The main ResultsPage component. It receives the 'json' data as a prop.
+// The main ResultsPage component.
 export function ResultsPage(json) {
 
-  // Prepare the data array for the RatingBox component.
-  // This is a safe way to handle potentially missing data.
-  const ebayScraperData = [
-    `Overall Review Sentiment: ${json?.ebayScraperAnalysis?.commentResult || 'N/A'}`,
-    `Authenticity: ${json?.ebayScraperAnalysis?.authenticity || 'N/A'}`
-  ];
+  // Case 1: The response is from an eBay URL
+  if (json.type === 'ebay') {
+    const ebayScraperData = [
+      `Overall Review Sentiment: ${json.ebayScraperAnalysis?.commentResult || 'N/A'}`,
+      `Authenticity: ${json.ebayScraperAnalysis?.authenticity || 'N/A'}`
+    ];
 
-  return (
-    <div className='PanelList'>
-      <h2>Here's what we found out.</h2>
+    return (
+      <div className='PanelList'>
+        <h2>Here's what we found out for this eBay item.</h2>
+        
+        <div className='Panel'>
+            <span>
+                <img className="panelImg" src={json.productPicture} alt={json.productName} />
+                <h2>
+                    Name: {json.productName || 'Name not found'}
+                </h2>
+                <p>
+                    {json.productPrice || 'Price not found'}
+                </p>
+            </span>
+        </div>
 
-      <div className='Panel'>
-          <span>
-              <img className="panelImg" src={json.productPicture} alt={json.productName} />
-              <h2>
-                  Name: {json.productName}
-              </h2>
-              <p>
-                  {json.productPrice}
-              </p>
-              <a href={json.productLink} target="_blank" rel="noopener noreferrer">
-                  Product Link
-              </a>
-          </span>
+        <RatingBox name="Ebay Scraper Analysis" infoList={ebayScraperData} />
       </div>
+    );
+  }
 
-      {/* --- THIS IS THE CRITICAL FIX --- */}
-      {/* We are now rendering the RatingBox component using proper JSX syntax. */}
-      {/* We pass the 'name' and 'infoList' as props, like HTML attributes. */}
-      <RatingBox name="Ebay Scraper Analysis" infoList={ebayScraperData} />
+  // Case 2: The response is from an Amazon URL (Updated)
+  else if (json.type === 'amazon') {
+    // --- THIS IS THE UPDATED PART ---
+    // Prepare an array with all the new data fields.
+    // We use bracket notation ['recommended?'] to access the key with a special character.
+    const rateBudData = [
+        `Score: ${json.rateBudData?.score || 'N/A'}`,
+        `Authenticity: ${json.rateBudData?.authenticity || 'N/A'}`,
+        `Recommendation: ${json.rateBudData?.['recommended?'] || 'N/A'}`,
+        `Number of Reviews Analyzed: ${json.rateBudData?.numOfReviews || 'N/A'}`
+    ];
 
-    </div>
-  );
+    return (
+        <div className='PanelList'>
+            <h2>Here's what we found out for this Amazon item.</h2>
+            <RatingBox name="RateBud Analysis" infoList={rateBudData} />
+        </div>
+    );
+  }
+
+  // Case 3: The response is for a random (non-Amazon/eBay) URL
+  else if (json.type === 'random') {
+    const scamAdviserData = [
+        `Trust Score: ${json.scamAdviserScore || 'N/A'}`
+    ];
+    
+    return (
+        <div className='PanelList'>
+            <h2>Here's what we found out for this website.</h2>
+            <RatingBox name="Scam Adviser Analysis" infoList={scamAdviserData} />
+        </div>
+    );
+  }
+
+  // Fallback Case: If the type is unknown or missing
+  else {
+    return (
+        <div className='PanelList'>
+            <h2>Sorry, something went wrong.</h2>
+            <p>We couldn't analyze this URL. The data received was in an unexpected format.</p>
+        </div>
+    );
+  }
 }

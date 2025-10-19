@@ -48,20 +48,21 @@ def scamAdviserScraper(URL):
 
         time.sleep(3.5)
         scamAdviserScore = driver.find_element(By.XPATH, "/html/body/div[1]/section[1]/div/div[5]/div/div[1]/div/div/div/div/div/div[1]/div[2]/span").text
-        print(f"ScamAdviser Score: {scamAdviserScore}") # This is a score from 0-100
+        driver.quit()
+        return scamAdviserScore
 
     except Exception as e:
-        print(f"ScamAdviser script failed: {e}")
-    finally:
-        if 'driver' in locals():
-            print("Quitting normal driver.")
-            driver.quit() # <-- IMPORTANT: Quit the first driver
+        driver.quit()
+        return f"ScamAdviser script failed: {e}"
+
+
+    
 
 
 # -----------------------------------------------------------------
 # BLOCK 2: RATEBUD.AI (using 'stealth' driver)
 # -----------------------------------------------------------------
-def ratebudScraper(URL):
+def rateBudScraper(URL):
     print("\n--- Starting Ratebud.ai (Stealth Driver) ---")
     try:
         # --- Setup Stealth Driver ---
@@ -124,14 +125,13 @@ def ratebudScraper(URL):
 
         reviewsAnalysed = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div[3]/div[3]/p").text
         print(reviewsAnalysed)
-
+        driver.quit()
+        return reviewTrustScore, authenticityRateBud, recommendationRateBud, reviewsAnalysed
 
     except Exception as e:
         print(f"\n--- RATEBUD SCRIPT FAILED ---")
-        print(f"Error: {e}")
-    finally:
-        if 'driver' in locals():
-            print("Quitting stealth driver.")
-            driver.quit() # <-- IMPORTANT: Quit the second driver
+        driver.quit()
+        return f"Error: {e}"
+
 
     print("\n--- All operations finished. ---")
