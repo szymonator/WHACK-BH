@@ -1,5 +1,5 @@
-
 import React, { useState } from "react";
+
 export function MyTextbox() {
 
   // state for textbox
@@ -72,9 +72,12 @@ export function MyTextbox() {
   return (
 
     <div className="textbox">
-      <input type="text" value={inputValue} onChange={handleInputChange}>
+      
+      <input className="text"type="text" value={inputValue} onChange={handleInputChange}>
       </input>
-      <input type='button' onClick={handleClick}></input>
+      <input name="submit"className="submitButton"type='button' onClick={handleClick}></input>
+      
+      <p>{errorMessage}</p>
     </div>
   );
 }
