@@ -1,18 +1,17 @@
-import logo from '../assets/logo.svg';
 import prince from '../assets/prince.png'
 import '../css/App.css';
-import { MyTextbox } from './MyTextbox';
 import { ResultsPage } from './resultsPage';
-import React, { useState } from "react";
+import { useState } from "react";
+import { sendRequest } from '../ApiCalls';
 
-function App() {
+export default function App() {
 
-    // state and handler for textbox
+
+  // state for textbox
   const [inputValue, setInputValue] = useState('');
   const handleInputChange = (event) => {
     setInputValue(event.target.value)
   }
-
 
   //State and handler for current state website is in: false is output state
   const [contentFlag, setFlagValue] = useState(true);
@@ -31,24 +30,8 @@ function App() {
   let json = require('./test.json');
 
 
-  // sends post request to specific url and recieves json file in return
-  async function sendRequest(link) {
-    const url = ""
-
-    const response = await fetch(url, {
-      method: "POST",
-      body: link
-    })
-
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`)
-    }
-
-    return await response.json()
-  }
-
 // run when submit button is clicked
-  function handleClick(inputValue) {
+  function handleClick() {
     //client side validation
     if (validURL(inputValue)) {
 
@@ -76,9 +59,6 @@ function App() {
 
   }
 
-
-
-
   //contains valid hosts
   const VALIDHOSTS = ["www.amazon.co.uk", "www.amazon.com","www.ebay.co.uk","www.ebay.com"];
   // returns whether the given input is a valid url
@@ -96,13 +76,7 @@ function App() {
     catch {
       return false
     }
-
-
-
-
   }
-
-
   // html view for app
   return (
 
@@ -122,7 +96,15 @@ function App() {
           <><p>
             insert a  link (meow)
           </p>
-            <MyTextbox inputValue={inputValue} handleInputChange={handleInputChange} errorMessage={errorOccured} handleClick={() => handleClick(inputValue)}></MyTextbox>
+            <div className="textbox">
+              <input
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    placeholder="Paste product URL here (e.g., from Amazon, eBay)"
+                  />
+              <button onClick={handleClick}>Submit</button>
+            </div>
 
           </>
           //else
@@ -135,11 +117,9 @@ function App() {
         
         {// button to test flag change, remove before submit
         }
-        <input type='button' onClick={function () { handleFlagChange() }}></input>
+        {/* <input type='button' onClick={function () { handleFlagChange() }}></input> */}
       </header>
     </div>
   );
 }
-
-export default App;
 
