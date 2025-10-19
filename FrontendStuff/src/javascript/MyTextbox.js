@@ -45,12 +45,39 @@ export function MyTextbox() {
     }
   }
 
+
+  async function sendRequest(link) {
+    const url = ""
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: link
+      })
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`)
+      }
+
+      return await response.json()
+
+    }
+    
+    catch (error) {
+      console.error(error.message)
+    }
+
+  }
+
+
   return (
 
     <div className="textbox">
-      <input type="text" value={inputValue} onChange={handleInputChange}>
+      
+      <input className="text"type="text" value={inputValue} onChange={handleInputChange}>
       </input>
-      <input type='button' onClick={handleClick}></input>
+      <input name="submit"className="submitButton"type='button' onClick={handleClick}></input>
+      
+      <p>{errorMessage}</p>
     </div>
   );
 }
