@@ -18,118 +18,120 @@ scamAdviserScore = "N/A" # Default value in case it fails
 # -----------------------------------------------------------------
 # BLOCK 1: SCAMADVISER (using your 'normal' driver)
 # -----------------------------------------------------------------
-print("--- Starting Scamadviser (Normal Driver) ---")
-try:
-    # Your method:
-    driver = webdriver.Chrome()
-
-    driver.get('https://www.scamadviser.com/')
-    manageCookies = driver.find_element(By.ID, "ez-manage-settings")
-    manageCookies.click()
-    time.sleep(0.5)
-    saveCookies = driver.find_element(By.ID, "ez-save-settings")
-    saveCookies.click()
-    time.sleep(0.5)
-
-
-    inputBox = driver.find_element(By.XPATH, "/html/body/div[1]/div[3]/div[3]/div[1]/div[2]/div[1]/form/div[1]/input")
-    inputBox.send_keys(Keys.CLEAR, URL)
-    time.sleep(0.5)
-
-    enterURL = driver.find_element(By.XPATH, "/html/body/div[1]/div[3]/div[3]/div[1]/div[2]/div[1]/form/button")
-    enterURL.click()
-
+def scamAdviserScraper(URL):
+    print("--- Starting Scamadviser (Normal Driver) ---")
     try:
-        antiBot = driver.find_element(By.XPATH, "/html/body/div[1]/section[1]/div/div/div/div/div/div/div[2]/form/button")
-        antiBot.click()
-    except:
-        pass
+        # Your method:
+        driver = webdriver.Chrome()
 
-    time.sleep(3.5)
-    scamAdviserScore = driver.find_element(By.XPATH, "/html/body/div[1]/section[1]/div/div[5]/div/div[1]/div/div/div/div/div/div[1]/div[2]/span").text
-    print(f"ScamAdviser Score: {scamAdviserScore}") # This is a score from 0-100
+        driver.get('https://www.scamadviser.com/')
+        manageCookies = driver.find_element(By.ID, "ez-manage-settings")
+        manageCookies.click()
+        time.sleep(0.5)
+        saveCookies = driver.find_element(By.ID, "ez-save-settings")
+        saveCookies.click()
+        time.sleep(0.5)
 
-except Exception as e:
-    print(f"ScamAdviser script failed: {e}")
-finally:
-    if 'driver' in locals():
-        print("Quitting normal driver.")
-        driver.quit() # <-- IMPORTANT: Quit the first driver
+
+        inputBox = driver.find_element(By.XPATH, "/html/body/div[1]/div[3]/div[3]/div[1]/div[2]/div[1]/form/div[1]/input")
+        inputBox.send_keys(Keys.CLEAR, URL)
+        time.sleep(0.5)
+
+        enterURL = driver.find_element(By.XPATH, "/html/body/div[1]/div[3]/div[3]/div[1]/div[2]/div[1]/form/button")
+        enterURL.click()
+
+        try:
+            antiBot = driver.find_element(By.XPATH, "/html/body/div[1]/section[1]/div/div/div/div/div/div/div[2]/form/button")
+            antiBot.click()
+        except:
+            pass
+
+        time.sleep(3.5)
+        scamAdviserScore = driver.find_element(By.XPATH, "/html/body/div[1]/section[1]/div/div[5]/div/div[1]/div/div/div/div/div/div[1]/div[2]/span").text
+        print(f"ScamAdviser Score: {scamAdviserScore}") # This is a score from 0-100
+
+    except Exception as e:
+        print(f"ScamAdviser script failed: {e}")
+    finally:
+        if 'driver' in locals():
+            print("Quitting normal driver.")
+            driver.quit() # <-- IMPORTANT: Quit the first driver
 
 
 # -----------------------------------------------------------------
 # BLOCK 2: RATEBUD.AI (using 'stealth' driver)
 # -----------------------------------------------------------------
-print("\n--- Starting Ratebud.ai (Stealth Driver) ---")
-try:
-    # --- Setup Stealth Driver ---
-    options = Options()
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36")
-    options.add_argument("--start-maximized")
-    options.add_argument("--disable-infobars")
+def ratebudScraper(URL):
+    print("\n--- Starting Ratebud.ai (Stealth Driver) ---")
+    try:
+        # --- Setup Stealth Driver ---
+        options = Options()
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36")
+        options.add_argument("--start-maximized")
+        options.add_argument("--disable-infobars")
 
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options) # <-- This is a NEW driver
-    print("Stealth Chromedriver started.")
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=options) # <-- This is a NEW driver
+        print("Stealth Chromedriver started.")
 
-    stealth(driver,
-            languages=["en-US", "en"],
-            vendor="Google Inc.",
-            platform="MacIntel",
-            webgl_vendor="Intel Inc.",
-            renderer="Intel Iris OpenGL Engine",
-            fix_hairline=True,
-            )
-    print("Selenium-Stealth patches applied.")
+        stealth(driver,
+                languages=["en-US", "en"],
+                vendor="Google Inc.",
+                platform="MacIntel",
+                webgl_vendor="Intel Inc.",
+                renderer="Intel Iris OpenGL Engine",
+                fix_hairline=True,
+                )
+        print("Selenium-Stealth patches applied.")
 
-    # --- Create a NEW wait object for this new driver ---
-    wait = WebDriverWait(driver, 10)
+        # --- Create a NEW wait object for this new driver ---
+        wait = WebDriverWait(driver, 10)
 
-    # --- Run Ratebud.ai logic ---
-    driver.get('https://ratebud.ai')
+        # --- Run Ratebud.ai logic ---
+        driver.get('https://ratebud.ai')
 
-    # Wait for the INPUT BOX to be clickable
-    inputBox2 = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, "input[placeholder='Enter a valid Amazon URL']"))
-    )
-    print("Found the input box.")
-    
-    # Interact
-    inputBox2.clear()
-    inputBox2.send_keys(URL)
-    
-    print("Successfully sent keys to input box.")
-    
-    # Click the Analyze button
-    analyze_button = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']"))
-    )
-    analyze_button.click()
-    print("Clicked 'Analyze' button.")
-    
-    time.sleep(5) # Wait for results to load
+        # Wait for the INPUT BOX to be clickable
+        inputBox2 = wait.until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "input[placeholder='Enter a valid Amazon URL']"))
+        )
+        print("Found the input box.")
+        
+        # Interact
+        inputBox2.clear()
+        inputBox2.send_keys(URL)
+        
+        print("Successfully sent keys to input box.")
+        
+        # Click the Analyze button
+        analyze_button = wait.until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']"))
+        )
+        analyze_button.click()
+        print("Clicked 'Analyze' button.")
+        
+        time.sleep(5) # Wait for results to load
 
-    reviewTrustScore = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[1]/div[2]/div/div/div[1]/div[2]/div[2]/span[1]").text
-    print(reviewTrustScore)
+        reviewTrustScore = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[1]/div[2]/div/div/div[1]/div[2]/div[2]/span[1]").text
+        print(reviewTrustScore)
 
-    authenticityRateBud = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div[2]/div[2]/div/div/div[1]/div[2]/div[1]").text
-    print(authenticityRateBud)
+        authenticityRateBud = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div[2]/div[2]/div/div/div[1]/div[2]/div[1]").text
+        print(authenticityRateBud)
 
-    recommendationRateBud = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div[3]/div[1]/p").text
-    print(recommendationRateBud)
+        recommendationRateBud = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div[3]/div[1]/p").text
+        print(recommendationRateBud)
 
-    reviewsAnalysed = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div[3]/div[3]/p").text
-    print(reviewsAnalysed)
+        reviewsAnalysed = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div[3]/div[3]/p").text
+        print(reviewsAnalysed)
 
 
-except Exception as e:
-    print(f"\n--- RATEBUD SCRIPT FAILED ---")
-    print(f"Error: {e}")
-finally:
-    if 'driver' in locals():
-        print("Quitting stealth driver.")
-        driver.quit() # <-- IMPORTANT: Quit the second driver
+    except Exception as e:
+        print(f"\n--- RATEBUD SCRIPT FAILED ---")
+        print(f"Error: {e}")
+    finally:
+        if 'driver' in locals():
+            print("Quitting stealth driver.")
+            driver.quit() # <-- IMPORTANT: Quit the second driver
 
-print("\n--- All operations finished. ---")
+    print("\n--- All operations finished. ---")
