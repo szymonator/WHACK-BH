@@ -7,30 +7,16 @@ import princeMiddle from '../assets/prince_middle.png'
 
 export function ResultsPage(json) {
 
-
-    function pickPrince(number) {
-        if(number >= 75)
-            return princeGood;
-        else if(number >= 50)
-            return princeMiddle;
-        else return princeBad;
-    }
-
     // creates a rating box. needs title, score and a list of data to display
-    function RatingBox(name,score, infoList) {
-    return <div className='Panel'>
-
-
-        <img className="panelImg" src={pickPrince(score)}></img>
-        <h2>
-            {name}
-        </h2>
-        
-        <p>
-            {infoList.map((dataString => <p> {dataString} <br></br></p>)  )}
-        </p>
-
-    </div>;
+    function RatingBox(name, infoList) {
+      return <div className='Panel'>
+          <h2>
+              {name}
+          </h2>
+          <p>
+              {infoList.map((dataString => <p> {dataString} <br></br></p>)  )}
+          </p>
+      </div>;
 }
 
 
@@ -58,8 +44,9 @@ export function ResultsPage(json) {
     </div>
 
 
-    {RatingBox("Ratebud",json.rateBudData.score, [`Score: ${json.rateBudData.score}`,`Authenticity: ${json.rateBudData.authenticity}`])}
-
+    {/* {RatingBox("Ratebud",json.rateBudData.score, [`Score: ${json.rateBudData.score}`,`Authenticity: ${json.rateBudData.authenticity}`])} */}
+    {RatingBox("Ebay Scraper", json.ebayScraperAnalysis.commentResult, [`Overall Review Sentiment: ${json.ebayScraperAnalysis.commentResult}` ,`Authenticity: ${json.ebayScraperAnalysis.authenticity}`]
+    )}
   </div>;
   
 }

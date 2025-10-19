@@ -16,7 +16,11 @@ def analysis():
     "productPrice": product_info["Price"],
     # "scamAdviserScore" : 100,
     # "rateBudData" : {"score": 100, "authenticity": 87},
+<<<<<<< Updated upstream
     "ebayScraperAnalysis": {"commentResult": feedback, "authenticity": authenticity}, 
+=======
+    "ebayScraperAnalysis": {"score": 100, "authenticity": 87}, 
+>>>>>>> Stashed changes
     'error':None})
 
 # main driver function
