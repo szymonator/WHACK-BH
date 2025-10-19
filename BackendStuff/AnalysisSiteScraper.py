@@ -125,13 +125,20 @@ def rateBudScraper(URL):
 
         reviewsAnalysed = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[2]/div[3]/div[3]/p").text
         print(reviewsAnalysed)
+
+        productName = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[1]/div[1]/div/div/div[2]/div[1]/h1").text
+        print(productName)
+
+        imageElement = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[1]/div[1]/div/div/div[1]/div/img")
+        imageAddress = imageElement.get_attribute('src')
+
+        productPrice = driver.find_element(By.XPATH, '/html/body/div/div[1]/div[2]/div[4]/div/div[1]/button/span[2]').text
+        print(productPrice)
+        
         driver.quit()
-        return reviewTrustScore, authenticityRateBud, recommendationRateBud, reviewsAnalysed
+        return reviewTrustScore, authenticityRateBud, recommendationRateBud, reviewsAnalysed, productName, productPrice, imageAddress
 
     except Exception as e:
         print(f"\n--- RATEBUD SCRIPT FAILED ---")
         driver.quit()
         return f"Error: {e}"
-
-
-    print("\n--- All operations finished. ---")

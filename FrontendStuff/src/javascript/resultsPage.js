@@ -1,5 +1,25 @@
+import prince from '../assets/prince.png';
 
-// Reusable component for displaying analysis panels.
+// --- Reusable Component 1: Product Info ---
+// Displays the product's image, name, and price. Safely handles missing data.
+function ProductInfoPanel({ name, picture, price }) {
+  return (
+    <div className='Panel'>
+      <span>
+        <img className="panelImg" src={picture || prince} alt={name || 'Product'} />
+        <h2>
+          Name: {name || 'Name not found'}
+        </h2>
+        <p>
+          {price || 'Price not found'}
+        </p>
+      </span>
+    </div>
+  );
+}
+
+// --- Reusable Component 2: Analysis Results ---
+// Displays a list of analysis points. It will not crash.
 function RatingBox({ name, infoList }) {
   if (!infoList || !Array.isArray(infoList)) {
     return null; 
@@ -16,11 +36,15 @@ function RatingBox({ name, infoList }) {
   );
 }
 
-// The main ResultsPage component.
+// --- The Main Results Page Component ---
+// This now handles all 3 data types from your backend.
 export function ResultsPage(json) {
 
+  // We use optional chaining (?.) everywhere to prevent crashes.
+  // If `json` is null or a property is missing, it will show 'N/A' instead of breaking.
+
   // Case 1: The response is from an eBay URL
-  if (json.type === 'ebay') {
+  if (json?.type === 'ebay') {
     const ebayScraperData = [
       `Overall Review Sentiment: ${json.ebayScraperAnalysis?.commentResult || 'N/A'}`,
       `Authenticity: ${json.ebayScraperAnalysis?.authenticity || 'N/A'}`
@@ -29,29 +53,18 @@ export function ResultsPage(json) {
     return (
       <div className='PanelList'>
         <h2>Here's what we found out for this eBay item.</h2>
-        
-        <div className='Panel'>
-            <span>
-                <img className="panelImg" src={json.productPicture} alt={json.productName} />
-                <h2>
-                    Name: {json.productName || 'Name not found'}
-                </h2>
-                <p>
-                    {json.productPrice || 'Price not found'}
-                </p>
-            </span>
-        </div>
-
+        <ProductInfoPanel 
+          name={json.productName}
+          picture={json.productPicture}
+          price={json.productPrice}
+        />
         <RatingBox name="Ebay Scraper Analysis" infoList={ebayScraperData} />
       </div>
     );
   }
 
-  // Case 2: The response is from an Amazon URL (Updated)
-  else if (json.type === 'amazon') {
-    // --- THIS IS THE UPDATED PART ---
-    // Prepare an array with all the new data fields.
-    // We use bracket notation ['recommended?'] to access the key with a special character.
+  // Case 2: The response is from an Amazon URL
+  else if (json?.type === 'amazon') {
     const rateBudData = [
         `Score: ${json.rateBudData?.score || 'N/A'}`,
         `Authenticity: ${json.rateBudData?.authenticity || 'N/A'}`,
@@ -62,15 +75,20 @@ export function ResultsPage(json) {
     return (
         <div className='PanelList'>
             <h2>Here's what we found out for this Amazon item.</h2>
+            <ProductInfoPanel 
+              name={json.productName}
+              picture={json.productPicture}
+              price={json.productPrice}
+            />
             <RatingBox name="RateBud Analysis" infoList={rateBudData} />
         </div>
     );
   }
 
   // Case 3: The response is for a random (non-Amazon/eBay) URL
-  else if (json.type === 'random') {
+  else if (json?.type === 'random') {
     const scamAdviserData = [
-        `Trust Score: ${json.scamAdviserScore || 'N/A'}/100`
+        `Trust Score: ${json.scamAdviserScore || 'N/A'}`
     ];
     
     return (
@@ -81,12 +99,15 @@ export function ResultsPage(json) {
     );
   }
 
-  // Fallback Case: If the type is unknown or missing
+  // Fallback Case: If the type is unknown or the data is malformed
   else {
     return (
         <div className='PanelList'>
             <h2>Sorry, something went wrong.</h2>
             <p>We couldn't analyze this URL. The data received was in an unexpected format.</p>
+            <pre style={{textAlign: 'left', background: '#333', padding: '1em', borderRadius: '8px', fontSize: '12px'}}>
+              {JSON.stringify(json, null, 2)}
+            </pre>
         </div>
     );
   }

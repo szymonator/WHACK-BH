@@ -11,8 +11,11 @@ def analysis():
     url = request.get_json()["URL"]
     print(url)
     if "https://www.amazon.com" in url or "https://www.amazon.co.uk" in url:
-        rateBudScore, rateBudAuth, recommendationRateBud, numOfReviews = rateBudScraper(url)
+        rateBudScore, rateBudAuth, recommendationRateBud, numOfReviews, productName, productPrice, imageAddress = rateBudScraper(url)
         return jsonify({"type": "amazon",
+                        "productName": productName,
+                        "productPicture": imageAddress,
+                        "productPrice": productPrice,
                         "rateBudData" : {"score": rateBudScore, "authenticity": rateBudAuth, "recommended?": recommendationRateBud, "numOfReviews": numOfReviews}})
     
     elif "https://www.ebay.com" in url or "https://www.ebay.co.uk" in url:
