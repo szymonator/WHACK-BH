@@ -1,5 +1,5 @@
-
 import React, { useState } from "react";
+
 export function MyTextbox() {
 
   // state for textbox
@@ -44,30 +44,6 @@ export function MyTextbox() {
       return false
     }
   }
-
-
-  async function sendRequest(link) {
-    const url = ""
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        body: link
-      })
-
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`)
-      }
-
-      return await response.json()
-
-    }
-    
-    catch (error) {
-      console.error(error.message)
-    }
-
-  }
-
 
   return (
 
