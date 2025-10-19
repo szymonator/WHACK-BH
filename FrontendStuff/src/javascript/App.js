@@ -40,7 +40,7 @@ export default function App() {
 
         //return obtained json
         function (json) {
-        console.log(":)")
+        console.log(json)
         return json
       },
       // spit out erro

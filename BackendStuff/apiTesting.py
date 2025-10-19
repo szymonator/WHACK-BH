@@ -20,10 +20,12 @@ detector = pipeline("text-classification", model="roberta-base-openai-detector",
 # model = AutoModel.from_pretrained("roberta-base-openai-detection", token=extraction)
 
 
-def getInfo():
+def getInfo(ProductURL):
     driver = webdriver.Chrome()
-    driver.get("https://www.ebay.co.uk/itm/146870704806?_skw=cups+and+mugs&itmmeta=01K7VV4KM2C7H3QE649MWA28J9&hash=item22322d1aa6:g:Y0wAAeSwwfdo361J&itmprp=enc%3AAQAKAAAA0NHOg0D50eDiCdi%2FfP0r02ttbuuZoIVydl20m9w6AMUa5dQzJZZxkcjxVDalk7p%2FXl0NceH7VEocqOagEYJBMCqRniv%2Bbs%2BiN5vXy1R8hKPfDD8t9qlJn2KFT%2FzloHyDOTha%2B0vcxAdtv%2B9iB8sKfYi5dzh5efuJuXUMKgcAvqW5EA1KvYinGI%2FPguu4suWcEnOmVYy8ltRbFFSgfdydXoLu9V2HbbhSnW1oSTERCG1ASWw7QvfcHCnFnz1W%2FQ1UjAm%2B5Svcsxa8x2GhhjotNEI%3D%7Ctkp%3ABk9SR5a6kvu-Zg")
+    # driver.get("https://www.ebay.co.uk/itm/146870704806?_skw=cups+and+mugs&itmmeta=01K7VV4KM2C7H3QE649MWA28J9&hash=item22322d1aa6:g:Y0wAAeSwwfdo361J&itmprp=enc%3AAQAKAAAA0NHOg0D50eDiCdi%2FfP0r02ttbuuZoIVydl20m9w6AMUa5dQzJZZxkcjxVDalk7p%2FXl0NceH7VEocqOagEYJBMCqRniv%2Bbs%2BiN5vXy1R8hKPfDD8t9qlJn2KFT%2FzloHyDOTha%2B0vcxAdtv%2B9iB8sKfYi5dzh5efuJuXUMKgcAvqW5EA1KvYinGI%2FPguu4suWcEnOmVYy8ltRbFFSgfdydXoLu9V2HbbhSnW1oSTERCG1ASWw7QvfcHCnFnz1W%2FQ1UjAm%2B5Svcsxa8x2GhhjotNEI%3D%7Ctkp%3ABk9SR5a6kvu-Zg")
+    driver.get(ProductURL)
     wait = WebDriverWait(driver, 10)
+    
     try:
         wait.until(
             EC.presence_of_element_located((By.CLASS_NAME, "fdbk-container__details__comment"))

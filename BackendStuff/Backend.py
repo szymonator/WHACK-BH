@@ -7,7 +7,8 @@ CORS(app, supports_credentials=True, origins=['http://localhost:3000'], expose_h
 
 @app.route('/analysis', methods=["POST"])
 def analysis():
-    url = request.get_json()
+    url = request.get_json()["URL"]
+    print(url)
     product_info, feedback = getInfo(url)
     return jsonify({ 
     "productName": product_info["Name"],
