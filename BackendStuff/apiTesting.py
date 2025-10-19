@@ -53,11 +53,15 @@ def getInfo():
     count = 0
     scoretotal = 0
     for comment in product_info["Comment"]:
-        count += 1
-        comment1 = comment.get_text()
-        print(detector(comment1))
-        scoretotal += analyzer.polarity_scores(comment1)['compound']
-        print(analyzer.polarity_scores(comment1))
+        commenttext = comment.get_text()
+        detectorstats = detector(commenttext)       
+        if detectorstats[0]['label'] == 'Real':
+            count += 1  
+            scoretotal += analyzer.polarity_scores(commenttext)['compound']
+        # print(detector(commenttext))
+        # count += 1
+        
+        # print(analyzer.polarity_scores(commenttext))
     compoundaverage = scoretotal/count
     print("The average compound score is: " + str(compoundaverage))
 
