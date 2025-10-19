@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from apiTesting import getInfo
 app = Flask(__name__)
 
-@app.route('/request')
+CORS(app, supports_credentials=True, origins=['http://localhost:3000'], expose_headers=["Content-Type"])
+
+@app.route('/request', methods=["POST"])
 def request():
     url = request.get_json()
     product_info, feedback = getInfo(url)
