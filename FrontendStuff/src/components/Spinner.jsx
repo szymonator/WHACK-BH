@@ -1,7 +1,4 @@
-// This is a simple, reusable spinner component.
-// It's just an SVG icon that uses Tailwind's "animate-spin" class to rotate.
 export function Spinner({ className }) {
-  // This combines the default spinning animation with any extra styles you want to add
   const combinedClassName = `animate-spin ${className || ''}`;
 
   return (
