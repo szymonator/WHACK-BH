@@ -14,7 +14,7 @@ export function ResultsPage(json) {
               {name}
           </h2>
           <p>
-              {infoList.map((dataString => <p> {dataString} <br></br></p>)  )}
+              {infoList.map((dataString => <p> {dataString} <br></br></p>))}
           </p>
       </div>;
 }
