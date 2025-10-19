@@ -16,9 +16,8 @@ def analysis():
     "productPrice": product_info["Price"],
     # "scamAdviserScore" : 100,
     # "rateBudData" : {"score": 100, "authenticity": 87},
-    "ebayScraperAnalysis": {"commentResult": feedback, "authenticity": authenticity}, 
-    'error':None})
 
+    "ebayScraperAnalysis": {"commentResult": feedback, "authenticity": authenticity}, })
 # main driver function
 if __name__ == '__main__':
     app.run()
